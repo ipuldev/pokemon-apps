@@ -19,12 +19,13 @@ type DataResulting struct{
 }
 
 type Children struct{
-	Id int `json:"Id"`
 	Name string `json:"name"`
 	Url string `json:"url"`
 }
 
+const()
 
+var dataParsing DataResulting
 
 func GetData(w http.ResponseWriter, r *http.Request){
 	vars := mux.Vars(r)
@@ -40,17 +41,21 @@ func GetData(w http.ResponseWriter, r *http.Request){
 		log.Fatal(err)
 	}
 	
-	var dataParsing DataResulting
 	// fmt.Fprintf(w,string(readData))
 	json.Unmarshal(readData,&dataParsing)
-	for i := 1; i < len(dataParsing.Results); i++{
-		dataParsing.Results[i].Id = i
-	}
+
 	json.NewEncoder(w).Encode(dataParsing)
 	Logging("Get Data limit" + limit)
 }
 
-
+func GetByName(w http.ResponseWriter, r *http.Request){
+	// vars := mux.Vars(r)
+	// name := vars["name"]
+	log.Println(dataParsing.Results)
+	for _,results := range dataParsing.Results{
+		log.Println(results)
+	}
+}
 func Logging(data string){
 	f, err := os.OpenFile("Logging", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
 	if err != nil {

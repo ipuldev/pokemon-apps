@@ -16,7 +16,7 @@ func HandleFunc(){
 		fmt.Fprintf(w,"ok")
 	})
 	r.HandleFunc("/pokemon/get/{limit}",construct.GetData)
-
+	r.HandleFunc("/pokemon/{name}",construct.GetByName)
 	log.Fatal(http.ListenAndServe(":9000",r))
 
 }

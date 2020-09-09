@@ -11,6 +11,7 @@ import (
 )
 
 type DataResulting struct{
+
 	Total int `json:"count"`
 	Next string `json:"next"`
 	Previous string `json:"previous"`
@@ -23,6 +24,31 @@ type Children struct{
 	Url string `json:"url"`
 }
 
+type Single struct{
+	Abilities []Abilities `json:"abilities"`
+	Forms []Forms `json:"forms"`
+	Id int `json:"id"`
+}
+type Abilities struct{
+	Ability map[string]interface{} `json:"ability"`
+	Is_hiddden bool `json:"is_hidden"`
+	Slot int `json:"slot"`
+}
+
+type Forms struct{
+	Name string `json:"name"`
+	Url string `json:"url"`
+}
+
+type Img struct{
+	Sprites Sprites `json:"sprites"`
+}
+type Sprites struct{
+	Back_default string `json:"back_default"`
+	Back_shiny string `json:"back_shiny"`
+	Front_default string `json:"front_default"`
+	Front_shiny string `json:"front_shiny"`
+}
 
 const(
 	urls = "https://pokeapi.co/api/v2/pokemon/"	
@@ -62,9 +88,26 @@ func GetByName(w http.ResponseWriter, r *http.Request){
 	if err != nil{
 		log.Fatal(err)
 	}
-	var Data map[string]interface{}
+	var Data Single
 	json.Unmarshal(parseData,&Data)
-	json.NewEncoder(w).Encode(Data)
+
+	// Getting image
+	result_img, err := http.Get(Data.Forms[0].Url)
+	if err != nil{
+		log.Fatal(err)
+	}
+	parseData_img, err := ioutil.ReadAll(result_img.Body)
+	if err != nil{
+		log.Fatal(err)
+	}
+	var img Img
+	json.Unmarshal(parseData_img, &img)
+	
+	StoreData := make(map[string]interface{})
+	StoreData["Data"] = Data
+	StoreData["Data_Img"] = img
+
+	json.NewEncoder(w).Encode(StoreData)
 	Logging("Get Single Data" + name)
 }
 func Logging(data string){

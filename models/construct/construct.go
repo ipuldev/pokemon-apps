@@ -23,8 +23,9 @@ type Children struct{
 	Url string `json:"url"`
 }
 
+
 const(
-	
+	urls = "https://pokeapi.co/api/v2/pokemon/"	
 )
 
 var dataParsing DataResulting
@@ -51,12 +52,20 @@ func GetData(w http.ResponseWriter, r *http.Request){
 }
 
 func GetByName(w http.ResponseWriter, r *http.Request){
-	// vars := mux.Vars(r)
-	// name := vars["name"]
-	log.Println(dataParsing.Results)
-	for _,results := range dataParsing.Results{
-		log.Println(results)
+	vars := mux.Vars(r)
+	name := vars["name"]
+	result, err := http.Get(urls + name)
+	if err != nil{
+		log.Fatal(err)
 	}
+	parseData, err := ioutil.ReadAll(result.Body)
+	if err != nil{
+		log.Fatal(err)
+	}
+	var Data map[string]interface{}
+	json.Unmarshal(parseData,&Data)
+	json.NewEncoder(w).Encode(Data)
+	Logging("Get Single Data" + name)
 }
 func Logging(data string){
 	f, err := os.OpenFile("Logging", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)

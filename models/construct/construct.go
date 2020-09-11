@@ -51,7 +51,7 @@ type Sprites struct{
 }
 
 const(
-	urls = "https://pokeapi.co/api/v2/pokemon/"	
+	urls = "https://pokeapi.co/api/v2/pokemon/"
 )
 
 var dataParsing DataResulting
@@ -69,7 +69,7 @@ func GetData(w http.ResponseWriter, r *http.Request){
 	if err != nil{
 		log.Fatal(err)
 	}
-	
+
 	// fmt.Fprintf(w,string(readData))
 	json.Unmarshal(readData,&dataParsing)
 
@@ -102,7 +102,7 @@ func GetByName(w http.ResponseWriter, r *http.Request){
 	}
 	var img Img
 	json.Unmarshal(parseData_img, &img)
-	
+
 	StoreData := make(map[string]interface{})
 	StoreData["Data"] = Data
 	StoreData["Data_Img"] = img

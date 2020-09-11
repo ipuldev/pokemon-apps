@@ -7,6 +7,7 @@ import(
 
 	"github.com/gorilla/mux"
 	"github.com/saiful344/pokemon_app/models/construct"
+	"github.com/saiful344/pokemon_app/models/orm"
 )
 
 
@@ -17,6 +18,7 @@ func HandleFunc(){
 	})
 	r.HandleFunc("/pokemon/get/{limit}",construct.GetData)
 	r.HandleFunc("/pokemon/{name}",construct.GetByName)
+	r.HandleFunc("/pokemon/MyPokemon",orm.GetData)
 	log.Fatal(http.ListenAndServe(":9000",r))
 
 }

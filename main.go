@@ -16,12 +16,15 @@ func HandleFunc(){
 	r.HandleFunc("/",func(w http.ResponseWriter, r *http.Request){
 		fmt.Fprintf(w,"ok")
 	})
-	r.HandleFunc("/get",picking.GetDataPicking)
-	r.HandleFunc("/pokemon/post",picking.PostDataPicking)
+	r.HandleFunc("/pokemon/get",picking.GetDataPicking).Methods("GET")
+	r.HandleFunc("/pokemon/getone/{id}",picking.GetDataOnePicking).Methods("GET")
+	r.HandleFunc("/pokemon/post",picking.PostDataPicking).Methods("POST")
+	r.HandleFunc("/pokemon/put/{id}",picking.PutDataPicking).Methods("PUT")
+	r.HandleFunc("/pokemon/delete/{id}",picking.DeleteDataPicking).Methods("DELETE")
+	// From res out
 	r.HandleFunc("/pokemon/get/{limit}",construct.GetData)
 	r.HandleFunc("/pokemon/{name}",construct.GetByName)
 	log.Fatal(http.ListenAndServe(":9000",r))
-
 }
 
 func main(){

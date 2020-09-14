@@ -4,11 +4,12 @@ import(
   "net/http"
   // "log"
   "fmt"
-  "io/ioutil"
+  "strconv"
+  // "io/ioutil"
   "encoding/json"
 
   // "github.com/saiful344/pokemon_app/models/message"
-  "github.com/saiful344/pokemon_app/models/helper"
+  // "github.com/saiful344/pokemon_app/models/helper"
   "github.com/jinzhu/gorm"
     // "github.com/gorilla/mux"
      _ "github.com/jinzhu/gorm/dialects/mysql"
@@ -18,7 +19,7 @@ type User_pick struct{
   gorm.Model
   Id int `json:"id"`
   Name string `json:"name"`
-  Power int `json:"power"`
+  Power int64 `json:"power"`
   Unique string `json:"unique"`
 }
 func (User_pick) TableName() string{
@@ -48,9 +49,25 @@ func GetDataPicking(w http.ResponseWriter,r *http.Request){
 }
 
 func PostDataPicking(w http.ResponseWriter,r *http.Request){
-  res, err := ioutil.ReadAll(r.Body())
-  helper.ErrorCheck(err)
-  
+  db := dbconn()
+  defer db.Close()
+  // res, err := ioutil.ReadAll(r.Body)
+  // defer r.Body.Close()
+  // if err != nil {
+  //   fmt.Println(err)
+  // }
+  r.ParseForm()
+  power ,err := strconv.ParseInt(r.FormValue("power"),10,32)
+   if err != nil {
+    fmt.Println(err)
+  }
+  var data User_pick
+  data.Name  = r.FormValue("name")
+  data.Power = power
+  data.Unique= r.FormValue("unique")
+  db.NewRecord(data)
+  db.Create(&data)
+  fmt.Println("ok")
 }
 
 

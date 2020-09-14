@@ -3,11 +3,13 @@ package helper
 import (
 	"log"
 	"os"
+	"fmt"
 )
+
 func ErrorCheck(err error){
 	if err != nil{
-		Logging_error(err)
 		panic(err.Error())
+		fmt.Println(err)
 	}
 }
 func Logging_error(data string){

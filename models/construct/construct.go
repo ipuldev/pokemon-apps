@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/saiful344/pokemon_app/models/helper"
 	"github.com/gorilla/mux"
 )
 
@@ -56,6 +57,7 @@ const (
 var dataParsing DataResulting
 
 func GetData(w http.ResponseWriter, r *http.Request) {
+	helper.EnableCors(&w,r)
 	vars := mux.Vars(r)
 	limit := vars["limit"]
 	data, err := http.Get("https://pokeapi.co/api/v2/pokemon?limit=" + limit)
@@ -83,6 +85,7 @@ func GetData(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetByName(w http.ResponseWriter, r *http.Request) {
+	helper.EnableCors(&w,r)
 	vars := mux.Vars(r)
 	name := vars["name"]
 	result, err := http.Get(urls + name)

@@ -42,13 +42,17 @@ class Home extends React.Component{
     ))
   }
 
+  Loading = () => {
+    return <div className="loading">Loading&#8230;</div>
+  }
+
   render(){
     return(
       <div>
         <CssBaseline />
         <Grid container spacing={3}>
           {this.state.results.length == 0
-            ? 'Loading results...': this.cards()
+            ? this.Loading() : this.cards()
           }
         </Grid>
       </div>

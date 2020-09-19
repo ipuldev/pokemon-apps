@@ -27,12 +27,15 @@ class Detail extends React.Component{
     axios.get(this.state.url+"/pokemon/"+id)
     .then((res) => {
       this.setState({data:res.data, id : res.data.Data.id})
-      console.log(this.state.data.Data.forms[0].name);
     })
   }
 
   render(){
+    let ability = this.state.data != null ? this.state.data.Data.abilities[0].ability.name : "0";
     let name = this.state.data != null ? this.state.data.Data.forms[0].name : "Waiting";
+    let height = this.state.data != null ? this.state.data.Data.height : "0";
+    let weight = this.state.data != null ? this.state.data.Data.weight : "0";
+    let id = this.state.data != null ? this.state.data.Data.id : "0";
     return(
         <div>
         <section className="wrapper">
@@ -57,12 +60,8 @@ class Detail extends React.Component{
             </div>
             <div className="card__body">
               <h3 className="card__name">{name}</h3>
-              <p className="card__job">astronaut & engineer</p>
-              <p className="card__bio"> American astronaut, engineer, and the first person to walk on the Moon.</p>
-            </div>
-            <div className="card__footer">
-              <p className="card__date">1209.09</p>
-              <p className=""></p>
+              <p className="card__job">{ability}</p>
+              <p className="card__bio">{ "This poekemon is "+height+" cm tall and weighs "+weight+" gram"}</p>
             </div>
           </div>
 

@@ -26,10 +26,10 @@ func RedirectToHTTPSRouter(next http.Handler) http.Handler {
 
 func HandleFunc(){
  	r := mux.NewRouter()
+
+ 	//This line router for front end
+
 	httpsRouter := RedirectToHTTPSRouter(r)
-	r.HandleFunc("/",func(w http.ResponseWriter, r *http.Request){
-		fmt.Fprintf(w,"ok")
-	})
 	r.HandleFunc("/pokemon/get",picking.GetDataPicking).Methods("GET")
 	r.HandleFunc("/pokemon/getone/{id}",picking.GetDataOnePicking).Methods("GET")
 	r.HandleFunc("/pokemon/post",picking.PostDataPicking).Methods("POST")
@@ -38,6 +38,7 @@ func HandleFunc(){
 	// From res out
 	r.HandleFunc("/pokemon/get/{limit}",construct.GetData).Methods("GET","OPTIONS")
 	r.HandleFunc("/pokemon/{name}",construct.GetByName).Methods("GET","OPTIONS")
+	r.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir("./client/build"))))
 	log.Fatal(http.ListenAndServe(":9000", httpsRouter))
 }
 

@@ -28,6 +28,8 @@ type Single struct {
 	Abilities []Abilities `json:"abilities"`
 	Forms     []Forms     `json:"forms"`
 	Id        int         `json:"id"`
+	Height 	  int 	  `json:"height"`
+	Weight 	  int 	  `json:"weight"`
 }
 type Abilities struct {
 	Ability    map[string]interface{} `json:"ability"`
